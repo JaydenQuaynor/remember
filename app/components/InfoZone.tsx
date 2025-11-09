@@ -11,7 +11,13 @@ export default function InfoZone() {
         <Text style={styles.LocationPlace}>Dorm</Text>
         </Pressable>
 
-        <Pressable style={styles.TimeButton}>
+        <Pressable
+          onPressIn={() => {}}
+          style={({ pressed }) => [
+            styles.TimeButton,
+            pressed && { backgroundColor: 'rgba(255, 255, 255, 0.45)' }
+          ]}
+        >
         <Text style={styles.Time}>9:30</Text>
         </Pressable>
 
@@ -34,9 +40,12 @@ const styles = StyleSheet.create({
     Container: {
         flexDirection:"row",
         justifyContent:"space-between",
+        gap: 12,
         alignItems: "center",
         backgroundColor: "#C33333",
-        paddingTop:4,
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        borderRadius: 100,
     },
     LocationButton: {
         flexDirection: "row",
@@ -48,11 +57,12 @@ const styles = StyleSheet.create({
         
     },
     LocationBasedAction: {
-  
+        color: "rgba(255, 255, 255, 1)",
         fontSize:12,
         
     },
     LocationPlace: {
+        color: "rgba(255, 255, 255, 0.45)",
         fontSize:12,
 
     },
@@ -61,13 +71,15 @@ const styles = StyleSheet.create({
     },
     Time: {
         fontSize:12,
+        color: "rgba(255, 255, 255, 0.54)",
     },
     DatePicker: {
         flexDirection:"row",
-        gap: 4,
+        gap: 12,
     },
     DayOfWeek: {
-        fontSize:12,
+        fontSize:8,
+        color:"rgba(255, 255, 255, 0.35)",
 
     },
     Sunday: {
@@ -77,15 +89,18 @@ const styles = StyleSheet.create({
 
     },
     Tuesday: {
+        color: "rgba(255, 255, 255, 1)",
 
     },
     Wednesday: {
 
     },
     Thursday: {
+        color: "rgba(255, 255, 255, 1)",
 
     },
     Friday: {
+        color: "rgba(255, 255, 255, 1)",
 
     },
     Saturday: {
