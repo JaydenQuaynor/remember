@@ -1,14 +1,22 @@
-import React from 'react'
-import { Pressable, StyleSheet, Text } from 'react-native'
+import React from 'react';
+import { Pressable, StyleSheet, Text } from 'react-native';
 
-export default function InfoZone() {
+
+interface InfoZoneProps {
+    trigger: 'Arriving' | 'Leaving';
+    triggerLocation: string;
+    triggerTime: string;
+
+}
+
+export default function InfoZone({trigger,triggerLocation,triggerTime}: InfoZoneProps) {
   return (
 
     <Pressable style={styles.Container}>
 
         <Pressable style={styles.LocationButton} >
-        <Text style={styles.LocationBasedAction}>Leaving</Text>
-        <Text style={styles.LocationPlace}>Dorm</Text>
+        <Text style={styles.LocationBasedAction}>{trigger}</Text>
+        <Text style={styles.LocationPlace}>{triggerLocation}</Text>
         </Pressable>
 
         <Pressable
@@ -18,7 +26,7 @@ export default function InfoZone() {
             pressed && { backgroundColor: 'rgba(255, 255, 255, 0.45)' }
           ]}
         >
-        <Text style={styles.Time}>9:30</Text>
+        <Text style={styles.Time}>{triggerTime}</Text>
         </Pressable>
 
         <Pressable style={styles.DatePicker}>

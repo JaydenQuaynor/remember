@@ -4,7 +4,18 @@ import Cap from '../../assets/icons/cap.svg'
 import Pencil from '../../assets/icons/pencil.svg'
 import InfoZone from './InfoZone'
 import StartCheckBtn from './StartCheckBtn'
-export default function RememberBlock() {
+
+interface RememberBlockProps {
+    itemName: string;
+    itemTag: string;
+    trigger: 'Arriving' | 'Leaving';
+    triggerLocation: string;
+    triggerTime: string;
+    triggerDay: string;
+
+}
+
+export default function RememberBlock({itemName,itemTag,trigger,triggerDay,triggerLocation,triggerTime}:RememberBlockProps) {
   return (
     <View style={styles.Container}>
    
@@ -13,14 +24,14 @@ export default function RememberBlock() {
 
         <View style={styles.InfoContainer}>    
         <View style={styles.InfoContent}>   
-            <Pressable style={styles.CapButton}><Cap width={24} /></Pressable> 
-            <Pressable style={styles.TextButton}><Text style={styles.ItemName}>Work <Text style={styles.ItemTag}>@Sweetgreens</Text></Text></Pressable> 
+            <Pressable style={styles.CapButton}><Cap width={24}  fill={'#C33333'} /></Pressable> 
+            <Pressable style={styles.TextButton}><Text style={styles.ItemName}>{itemName} <Text style={styles.ItemTag}>@{itemTag}</Text></Text></Pressable> 
         </View>
         <Pressable style={styles.PencilButton}><Pencil width={14} style={styles.Pencil} /></Pressable> 
         </View>
      
         <View style={styles.InfoZoneContainer}>   
-            <InfoZone />
+            <InfoZone trigger={trigger} triggerLocation={triggerLocation} triggerTime={triggerTime}/>
         </View>
 
         </View> 
@@ -57,10 +68,12 @@ const styles = StyleSheet.create({
     },
     InfoContent : {
         flexDirection: "row",
+        gap: 6,
 
     },
     ItemName : {
-        color: "rgb(68, 68, 68)"
+        color: "rgb(68, 68, 68)",
+        
     },
     ItemTag : {
         color: "#C33333",
@@ -94,10 +107,11 @@ const styles = StyleSheet.create({
 
     },
     CapButton : {
+        // color: "rgba(195, 51, 51, 1)",
 
     },
     TextButton : {
-
+     
     },
     PencilButton : {
 
