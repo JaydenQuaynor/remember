@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Text } from '@react-navigation/elements';
-import { StyleSheet, View, Pressable } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Home from "../../assets/icons/tabbar/Home.svg";
 import Plus from "../../assets/icons/tabbar/Plus.svg";
@@ -36,12 +36,17 @@ function TabButton({
       testID={testID}
       style={({ pressed }) => [
         styles.tabButton,
+        isFocused && styles.tabButtonActive,
         pressed && styles.tabButtonPressed
       ]}
     >
       <View style={styles.tabButtonContent}>
-        {icon}
-        <Text style={styles.tabButtonLabel}>{label.toUpperCase()}</Text>
+        <View style={[styles.iconContainer, isFocused && styles.iconContainerActive]}>
+          {icon}
+        </View>
+        <Text style={[styles.tabButtonLabel, isFocused && styles.tabButtonLabelActive]}>
+          {label.toUpperCase()}
+        </Text>
       </View>
     </Pressable>
   );
@@ -77,7 +82,7 @@ function CenterPlusButton({
       ]}
     >
       <View style={styles.centerButtonContent}>
-        <Plus width={28} height={28} color="#C33333" />
+        <Plus width={28} height={28} color="#C3333" />
       </View>
     </Pressable>
   );
@@ -144,7 +149,7 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
   const accountConfig = getRouteConfig(accountRoute);
 
   return (
-    <View style={[styles.tabbar, { paddingBottom: Math.max(insets.bottom, 8) }]}>
+    <View style={[styles.tabbar, { paddingBottom: Math.max(insets.bottom, 12) }]}>
       {/* HOME Tab */}
       {homeConfig && (
         <TabButton
@@ -193,11 +198,13 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     backgroundColor: '#C33333',
     paddingTop: 12,
     paddingHorizontal: 20,
+    paddingBottom: 12,
     minHeight: 70,
+    overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
@@ -219,31 +226,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 4,
   },
+  iconContainer: {
+    opacity: 0.6,
+  },
+  iconContainerActive: {
+    opacity: 1,
+  },
+  tabButtonActive: {
+    opacity: 1,
+  },
   tabButtonLabel: {
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '500',
+    opacity: 0.6,
+  },
+  tabButtonLabelActive: {
+    opacity: 1,
+    fontWeight: '600',
   },
   centerButton: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#FFFFFF',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 8,
+    maxHeight: 56,
   },
   centerButtonPressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.95 }],
+    opacity: 0.8,
   },
   centerButtonContent: {
     width: '100%',
+    
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
