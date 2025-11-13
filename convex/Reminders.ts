@@ -7,62 +7,71 @@ export const seedMockData = mutation({
             {
                 reminderName: 'Work',
                 triggerType: 'leaving' as const,
-                triggerDate: '2024-11-11',
+                triggerDate: '2025-11-13',
                 triggerLocation: 'Dorm',
                 triggerTime: '9:30',
                 status: 'notStarted' as const,
                 isDone: false,
-                createdAt: '2024-11-11T09:30:00.000Z', // ← Add this
+                isRepeating: true,
+                repeatDays: [1, 3, 5], // Monday, Wednesday, Friday
+                createdAt: '2025-11-13T09:30:00.000Z',
             },
             {
                 reminderName: 'Gym',
                 triggerType: 'arriving' as const,
-                triggerDate: '2024-11-11',
+                triggerDate: '2025-11-13',
                 triggerLocation: 'Gym',
                 triggerTime: '8:00',
                 status: 'notStarted' as const,
                 isDone: false,
-                createdAt: '2024-11-11T08:00:00.000Z', // ← Add this
+                isRepeating: true,
+                repeatDays: [1, 2, 3, 4, 5], // Weekdays
+                createdAt: '2025-11-13T08:00:00.000Z',
             },
             {
                 reminderName: 'Class',
                 triggerType: 'leaving' as const,
-                triggerDate: '2024-11-13',
+                triggerDate: '2025-11-13',
                 triggerLocation: 'Home',
                 triggerTime: '8:15',
                 status: 'notStarted' as const,
                 isDone: false,
-                createdAt: '2024-11-13T08:15:00.000Z', // ← Add this
+                isRepeating: false, // One-time event
+                createdAt: '2025-11-13T08:15:00.000Z',
             },
             {
                 reminderName: 'Work',
                 triggerType: 'leaving' as const,
-                triggerDate: '2024-11-14',
+                triggerDate: '2025-11-14',
                 triggerLocation: 'Dorm',
                 triggerTime: '9:30',
                 status: 'notStarted' as const,
                 isDone: false,
-                createdAt: '2024-11-14T09:30:00.000Z', // ← Add this
+                isRepeating: false,
+                createdAt: '2025-11-14T09:30:00.000Z',
             },
             {
                 reminderName: 'Dinner',
                 triggerType: 'arriving' as const,
-                triggerDate: '2024-11-14',
+                triggerDate: '2025-11-14',
                 triggerLocation: 'Mikes',
                 triggerTime: '19:30',
                 status: 'notStarted' as const,
                 isDone: false,
-                createdAt: '2024-11-14T19:30:00.000Z', // ← Add this
+                isRepeating: false,
+                createdAt: '2025-11-14T19:30:00.000Z',
             },
             {
                 reminderName: 'Grocery Shopping',
                 triggerType: 'arriving' as const,
-                triggerDate: '2024-11-15',
+                triggerDate: '2025-11-15',
                 triggerLocation: 'Mall',
                 triggerTime: '10:00',
                 status: 'notStarted' as const,
                 isDone: false,
-                createdAt: '2024-11-15T10:00:00.000Z', // ← Add this
+                isRepeating: true,
+                repeatDays: [6], // Saturday only
+                createdAt: '2025-11-15T10:00:00.000Z',
             },
         ];
 
@@ -109,6 +118,8 @@ export const createReminder = mutation({
               v.literal("finished"),
           ),
           isDone: v.boolean(),   
+          isRepeating: v.boolean(),  
+          repeatDays: v.optional(v.array(v.number())), 
     },
 
     handler: async(ctx, args) => {
@@ -121,6 +132,8 @@ export const createReminder = mutation({
             triggerLocation: args.triggerLocation,
             status: args.status,
             isDone: args.isDone,
+            isRepeating: args.isRepeating, 
+            repeatDays: args.repeatDays, 
             createdAt: new Date().toISOString(),
         });
         return reminderId;
@@ -146,7 +159,9 @@ export const updateReminder = mutation({
             v.literal("started"),
             v.literal("finished"),
         )),
-        isDone: v.optional(v.boolean()), 
+        isDone: v.optional(v.boolean()),
+        isRepeating: v.optional(v.boolean()),
+        repeatDays: v.optional(v.array(v.number())),
     },
 
     handler: async(ctx, args) => {
@@ -165,6 +180,18 @@ export const deleteReminder = mutation({
     },
     handler : async (ctx, args) => {
         await ctx.db.delete(args.reminderId);
+    }
+});
+
+// Helper to clear all reminders (useful for testing/reseeding)
+export const clearAllReminders = mutation({
+    args: {},
+    handler: async (ctx) => {
+        const allReminders = await ctx.db.query("Reminder").collect();
+        for (const reminder of allReminders) {
+            await ctx.db.delete(reminder._id);
+        }
+        return { deleted: allReminders.length };
     }
 });
 

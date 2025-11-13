@@ -16,15 +16,17 @@ export default function StartCheckBtn() {
 const styles = StyleSheet.create({
 
     CheckButtonContainer : {
+
         justifyContent: "center",
         alignItems:"center",
         borderRadius: 14,
         backgroundColor: "#C33333",
-        height: "100%",
-        padding: 14,
+        height: 40,
+        padding: 8,
         
     },
     CheckButton : {
+        flexDirection: "row",
         alignItems:"center",
         gap:4,
         justifyContent:"center",

@@ -6,171 +6,24 @@ import Plus from '../../assets/icons/tabbar/Plus.svg';
 import { api } from "../../convex/_generated/api";
 import HomeHeader from '../components/HomeHeader';
 import RememberBlock from '../components/RememberBlock';
+import { createReminderSections } from '../utils/dateUtils';
 
-interface TaskData {
-  itemName: string;
-  itemTag: string;
-  trigger: 'Arriving' | 'Leaving';
-  triggerLocation: string;
-  triggerTime: string;
-  triggerDay: string;
-}
 
 export default function index() {
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString + 'T00:00:00');
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
-    const dayName = days[date.getDay()];
-    const month = months[date.getMonth()];
-    const day = date.getDate();
-    
-    const getOrdinal = (n: number) => {
-      const s = ['th', 'st', 'nd', 'rd'];
-      const v = n % 100;
-      return n + (s[(v - 20) % 10] || s[v] || s[0]);
-    };
-    
-    return `${dayName} ${month} ${getOrdinal(day)}`;
-  };
-  const today = new Date();
-  const todayString = today.toISOString().split('T')[0]; // "2024-11-11"
-
   const reminders = useQuery(api.Reminders.getAllReminders);
+  
   if (reminders === undefined) {
     return <Text>Loading...</Text>;
   }
-  // Create a Map where the key is the date string
-  const remindersByDate = new Map();
 
-  reminders.forEach((reminders) => {
-    const date = reminders.triggerDate;
+  // Use the utility function to create sections organized by date
+  type ReminderType = NonNullable<typeof reminders>[number];
+  const sections = createReminderSections(reminders, 7) as Array<{
+    title: string;
+    data: (ReminderType | 'empty')[];
+    dateString: string;
+  }>;
 
-    if (!remindersByDate.has(date)){
-      remindersByDate.set(date, []);
-    }
-    remindersByDate.get(date).push(reminders);
-  });
-  // Convert Map entries to array
-const sections = Array.from(remindersByDate.entries())
-.map(([date, reminders]) => ({
-  title: formatDate(date),
-  data: reminders,
-  dateString: date // Keep for sorting
-}))
-.sort((a, b) => {
-  // Custom sort: today first, then chronological
-  if (a.dateString === todayString) return -1;
-  if (b.dateString === todayString) return 1;
-  return a.dateString.localeCompare(b.dateString);
-
-
-});
-
-  // const data: Array<{ title: string; data: (TaskData | 'empty')[] }> = [
-  //   {
-  //     title: 'Monday Nov 10th',
-  //     data: ['empty'] as (TaskData | 'empty')[], // Empty day
-  //   },
-  //   {
-  //     title: 'Tuesday Nov 11th',
-  //     data: [
-  //       {
-  //         itemName: 'Work',
-  //         itemTag: 'Sweetgreens',
-  //         trigger: 'Leaving' as const,
-  //         triggerLocation: 'Dorm',
-  //         triggerTime: '9:30',
-  //         triggerDay: 'Tuesday',
-  //       },
-  //       {
-  //         itemName: 'Gym',
-  //         itemTag: 'Fitness Center',
-  //         trigger: 'Arriving' as const,
-  //         triggerLocation: 'Gym',
-  //         triggerTime: '8:00',
-  //         triggerDay: 'Tuesday',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: 'Wednesday Nov 12th',
-  //     data: ['empty'] as (TaskData | 'empty')[], // Empty day
-  //   },
-  //   {
-  //     title: 'Thursday Nov 13th',
-  //     data: [
-  //       {
-  //         itemName: 'Class',
-  //         itemTag: 'University',
-  //         trigger: 'Leaving' as const,
-  //         triggerLocation: 'Home',
-  //         triggerTime: '8:15',
-  //         triggerDay: 'Thursday',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: 'Friday Nov 14th',
-  //     data: [
-  //       {
-  //         itemName: 'Work',
-  //         itemTag: 'Sweetgreens',
-  //         trigger: 'Leaving' as const,
-  //         triggerLocation: 'Dorm',
-  //         triggerTime: '9:30',
-  //         triggerDay: 'Friday',
-  //       },
-  //       {
-  //         itemName: 'Dinner',
-  //         itemTag: 'Restaurant',
-  //         trigger: 'Arriving' as const,
-  //         triggerLocation: 'Mikes',
-  //         triggerTime: '19:30',
-  //         triggerDay: 'Friday',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: 'Saturday Nov 15th',
-  //     data: [
-  //       {
-  //         itemName: 'Grocery Shopping',
-  //         itemTag: 'Supermarket',
-  //         trigger: 'Arriving' as const,
-  //         triggerLocation: 'Mall',
-  //         triggerTime: '10:00',
-  //         triggerDay: 'Saturday',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: 'Sunday Nov 16th',
-  //     data: ['empty'] as (TaskData | 'empty')[], // Empty day
-  //   },
-  //   {
-  //     title: 'Monday Nov 17th',
-  //     data: ['empty'] as (TaskData | 'empty')[], // Empty day
-  //   },
-  //   {
-  //     title: 'Tuesday Nov 18th',
-  //     data: ['empty'] as (TaskData | 'empty')[], // Empty day
-  //   },
-  //   {
-  //     title: 'Wednesday Nov 19th',
-  //     data: ['empty'] as (TaskData | 'empty')[], // Empty day
-  //   },
-  //   {
-  //     title: 'Thursday Nov 20th',
-  //     data: ['empty'] as (TaskData | 'empty')[], // Empty day
-  //   },
-  //   {
-  //     title: 'Friday Nov 21st',
-  //     data: ['empty'] as (TaskData | 'empty')[], // Empty day
-  //   },
-  // ];
   return (
     <SafeAreaView style={styles.safeView}> 
 
@@ -187,7 +40,7 @@ const sections = Array.from(remindersByDate.entries())
         sections={sections}
         ItemSeparatorComponent={() => <View style={{ height: 22 }} />}
         renderItem={({ item }) => {
-          if (item === 'empty' || (typeof item === 'object' && !item.itemName)) {
+          if (item === 'empty' || (typeof item === 'object' && !item.reminderName)) {
             return (
               <View style={styles.emptyStateContainer}>
                 <Text style={styles.emptyStateText}>Remember Something...</Text>
@@ -197,14 +50,20 @@ const sections = Array.from(remindersByDate.entries())
               </View>
             );
           }
+          // Map database fields to component props
+          const trigger = item.triggerType.charAt(0).toUpperCase() + item.triggerType.slice(1) as 'Arriving' | 'Leaving';
+          
           return <RememberBlock 
-            itemName={item.itemName}
-            itemTag={item.itemTag} 
-            trigger={item.trigger} 
-            triggerLocation={item.triggerLocation} 
-            triggerTime={item.triggerTime} 
-            triggerDay={item.triggerDay} 
-          />;
+          itemName={item.reminderName}
+          itemTag={item.triggerLocation || ''} 
+          trigger={trigger} 
+          triggerLocation={item.triggerLocation || ''} 
+          triggerTime={item.triggerTime || ''} 
+          triggerDay={item.triggerDate}
+          isRepeating={item.isRepeating}
+          repeatDays={item.repeatDays}
+          triggerDate={item.triggerDate}
+        />;
         }}
         renderSectionHeader={({ section }) => {
           return (

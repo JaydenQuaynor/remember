@@ -6,6 +6,7 @@ export default defineSchema({
 
     Reminder : defineTable({
         reminderName: v.string(),
+
         triggerType: v.union(
           v.literal("leaving"),
           v.literal("arriving"),
@@ -15,6 +16,11 @@ export default defineSchema({
         triggerDate: v.string(), 
         triggerTime: v.optional(v.string()),
         triggerLocation: v.optional(v.string()),
+
+        isRepeating: v.boolean(), 
+        repeatDays: v.optional(v.array(v.number())), 
+
+
         status: v.union(
             v.literal("notStarted"),
             v.literal("started"),

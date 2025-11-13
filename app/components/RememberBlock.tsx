@@ -1,9 +1,9 @@
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import Cap from '../../assets/icons/cap.svg'
-import Pencil from '../../assets/icons/pencil.svg'
 import InfoZone from './InfoZone'
 import StartCheckBtn from './StartCheckBtn'
+
 
 interface RememberBlockProps {
     itemName: string;
@@ -12,60 +12,81 @@ interface RememberBlockProps {
     triggerLocation: string;
     triggerTime: string;
     triggerDay: string;
+    isRepeating: boolean;          // Add this
+    repeatDays?: number[];         // Add this
+    triggerDate?: string;          // Add this
+  }
 
-}
 
-
-export default function RememberBlock({itemName,itemTag,trigger,triggerDay,triggerLocation,triggerTime}:RememberBlockProps) {
-
-  
-  
-  
-  
-  
+  export default function RememberBlock({
+    itemName,
+    itemTag,
+    trigger,
+    triggerDay,
+    triggerLocation,
+    triggerTime,
+    isRepeating,
+    repeatDays,
+    triggerDate
+  }: RememberBlockProps) {
     return (
-    <View style={styles.Container}>
-   
-
+      <View style={styles.Container}>
         <View style={styles.LeftContainer}>
-
-        <View style={styles.InfoContainer}>    
-        <View style={styles.InfoContent}>   
-            <Pressable style={styles.CapButton}><Cap width={24}  fill={'#C33333'} /></Pressable> 
-            <Pressable style={styles.TextButton}><Text style={styles.ItemName}>{itemName} <Text style={styles.ItemTag}>@{itemTag}</Text></Text></Pressable> 
-        </View>
-        <Pressable style={styles.PencilButton}><Pencil width={14} style={styles.Pencil} /></Pressable> 
-        </View>
-     
-        <View style={styles.InfoZoneContainer}>   
-            <InfoZone trigger={trigger} triggerLocation={triggerLocation} triggerTime={triggerTime}/>
-        </View>
-
+          <View style={styles.InfoContainer}>    
+            <View style={styles.InfoContent}>   
+              <Pressable style={styles.CapButton}>
+                <Cap width={24} fill={'#C33333'} />
+              </Pressable> 
+              <Pressable style={styles.TextButton}>
+                <Text style={styles.ItemName}>
+                  {itemName} <Text style={styles.ItemTag}>@{itemTag}</Text>
+                </Text>
+              </Pressable> 
+              
+            </View>
+            {/* <Pressable style={styles.PencilButton}>
+              <Pencil width={14} fill="rgba(44, 44, 44, 0.51)" />
+            </Pressable>  */}
+            <View style={styles.RightContainer}>
+          <StartCheckBtn />
         </View> 
+          </View>
        
-        <View style={styles.RightContainer}>
-            
-        
-       <StartCheckBtn />
+          <View style={styles.InfoZoneContainer}>   
+          <InfoZone 
+              trigger={trigger} 
+              triggerLocation={triggerLocation} 
+              triggerTime={triggerTime}
+              isRepeating={isRepeating}
+              repeatDays={repeatDays}
+              triggerDate={triggerDate}
+            />
+          </View>
+          
+          {/* Add the dynamic day/date indicator */}
+          {/* <DayIndicator 
+            isRepeating={isRepeating}
+            repeatDays={repeatDays}
+            triggerDate={triggerDate}
+          /> */}
         </View> 
-       
-
-     
+         
       
-    </View>
-  )
-}
+      </View>
+    );}
 
 const styles = StyleSheet.create({
     Container : {
         height:65,
-        flexDirection: "row",
+        marginVertical: 24,
+        // flexDirection: "row",
         justifyContent: "space-between"
 
     },
     LeftContainer : {
         justifyContent: "center",
-        gap:4,
+        
+        gap:12,
 
     },
     InfoContainer : {
@@ -75,6 +96,7 @@ const styles = StyleSheet.create({
     },
     InfoContent : {
         flexDirection: "row",
+        alignItems : "center",
         gap: 6,
 
     },
@@ -122,9 +144,6 @@ const styles = StyleSheet.create({
     },
     PencilButton : {
 
-    },
-    Pencil : {
-      color: "rgba(44, 44, 44, 0.51)"
     },
     
 })

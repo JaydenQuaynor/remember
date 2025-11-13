@@ -1,15 +1,19 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
+import DayIndicator from './DayIndicator';
 
 
 interface InfoZoneProps {
     trigger: 'Arriving' | 'Leaving';
     triggerLocation: string;
     triggerTime: string;
+    isRepeating: boolean;          // Add this
+    repeatDays?: number[];         // Add this
+    triggerDate?: string;   
 
 }
 
-export default function InfoZone({trigger,triggerLocation,triggerTime}: InfoZoneProps) {
+export default function InfoZone({trigger,triggerLocation,triggerTime,isRepeating,repeatDays, triggerDate}: InfoZoneProps) {
   return (
 
     <Pressable style={styles.Container}>
@@ -29,15 +33,11 @@ export default function InfoZone({trigger,triggerLocation,triggerTime}: InfoZone
         <Text style={styles.Time}>{triggerTime}</Text>
         </Pressable>
 
-        <Pressable style={styles.DatePicker}>
-            <Text style={[styles.DayOfWeek , styles.Sunday]}>S</Text>
-            <Text style={[styles.DayOfWeek , styles.Monday]}>M</Text>
-            <Text style={[styles.DayOfWeek , styles.Tuesday]}>T</Text>
-            <Text style={[styles.DayOfWeek , styles.Wednesday]}>W</Text>
-            <Text style={[styles.DayOfWeek , styles.Thursday]}>Th</Text>
-            <Text style={[styles.DayOfWeek , styles.Friday]}>F</Text>
-            <Text style={[styles.DayOfWeek , styles.Saturday]}>S</Text>
-        </Pressable>
+        <DayIndicator 
+            isRepeating={isRepeating}
+            repeatDays={repeatDays}
+            triggerDate={triggerDate}
+          />
 
     </Pressable>  
 

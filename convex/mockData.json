@@ -2,41 +2,59 @@
     {
       "reminderName": "Work",
       "triggerType": "leaving",
+      "triggerDate": "2025-11-13",
       "triggerLocation": "Dorm",
       "triggerTime": "9:30",
       "status": "notStarted",
-      "isDone": false
+      "isDone": false,
+      "isRepeating": true,
+      "repeatDays": [1, 3, 5],
+      "createdAt": "2025-11-13T09:30:00.000Z"
     },
     {
       "reminderName": "Gym",
       "triggerType": "arriving",
+      "triggerDate": "2025-11-13",
       "triggerLocation": "Gym",
       "triggerTime": "8:00",
       "status": "notStarted",
-      "isDone": false
+      "isDone": false,
+      "isRepeating": true,
+      "repeatDays": [1, 2, 3, 4, 5],
+      "createdAt": "2025-11-13T08:00:00.000Z"
     },
     {
       "reminderName": "Class",
       "triggerType": "leaving",
+      "triggerDate": "2025-11-13",
       "triggerLocation": "Home",
       "triggerTime": "8:15",
       "status": "notStarted",
-      "isDone": false
+      "isDone": false,
+      "isRepeating": false,
+      "createdAt": "2025-11-13T08:15:00.000Z"
     },
     {
       "reminderName": "Dinner",
       "triggerType": "arriving",
+      "triggerDate": "2025-11-13",
       "triggerLocation": "Mikes",
       "triggerTime": "19:30",
       "status": "notStarted",
-      "isDone": false
+      "isDone": false,
+      "isRepeating": false,
+      "createdAt": "2025-11-13T19:30:00.000Z"
     },
     {
       "reminderName": "Grocery Shopping",
       "triggerType": "arriving",
+      "triggerDate": "2025-11-15",
       "triggerLocation": "Mall",
       "triggerTime": "10:00",
       "status": "notStarted",
-      "isDone": false
+      "isDone": false,
+      "isRepeating": true,
+      "repeatDays": [6],
+      "createdAt": "2025-11-15T10:00:00.000Z"
     }
   ]
