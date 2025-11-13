@@ -1,0 +1,42 @@
+[
+    {
+      "reminderName": "Work",
+      "triggerType": "leaving",
+      "triggerLocation": "Dorm",
+      "triggerTime": "9:30",
+      "status": "notStarted",
+      "isDone": false
+    },
+    {
+      "reminderName": "Gym",
+      "triggerType": "arriving",
+      "triggerLocation": "Gym",
+      "triggerTime": "8:00",
+      "status": "notStarted",
+      "isDone": false
+    },
+    {
+      "reminderName": "Class",
+      "triggerType": "leaving",
+      "triggerLocation": "Home",
+      "triggerTime": "8:15",
+      "status": "notStarted",
+      "isDone": false
+    },
+    {
+      "reminderName": "Dinner",
+      "triggerType": "arriving",
+      "triggerLocation": "Mikes",
+      "triggerTime": "19:30",
+      "status": "notStarted",
+      "isDone": false
+    },
+    {
+      "reminderName": "Grocery Shopping",
+      "triggerType": "arriving",
+      "triggerLocation": "Mall",
+      "triggerTime": "10:00",
+      "status": "notStarted",
+      "isDone": false
+    }
+  ]

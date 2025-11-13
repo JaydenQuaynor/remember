@@ -15,8 +15,15 @@ interface RememberBlockProps {
 
 }
 
+
 export default function RememberBlock({itemName,itemTag,trigger,triggerDay,triggerLocation,triggerTime}:RememberBlockProps) {
-  return (
+
+  
+  
+  
+  
+  
+    return (
     <View style={styles.Container}>
    
 
