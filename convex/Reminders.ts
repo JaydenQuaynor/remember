@@ -80,7 +80,7 @@ export const getAllReminders = query({
     handler: async (ctx) => {
         return await ctx.db.query("Reminder").collect();
     }
-})
+});
 
 export const getReminderById = query({
     args: {
@@ -89,7 +89,7 @@ export const getReminderById = query({
     handler: async (ctx , args) =>  {
         return await ctx.db.get(args.reminderId);
     }
-})
+});
 
 export const createReminder = mutation({
     args: {
@@ -125,7 +125,7 @@ export const createReminder = mutation({
         });
         return reminderId;
     }
-})
+});
 
 
 export const updateReminder = mutation({
@@ -157,7 +157,7 @@ export const updateReminder = mutation({
 
         return reminderId;
     }
-})
+});
 
 export const deleteReminder = mutation({
     args: {
@@ -166,4 +166,40 @@ export const deleteReminder = mutation({
     handler : async (ctx, args) => {
         await ctx.db.delete(args.reminderId);
     }
-})
+});
+
+// Migration function to fix existing reminders missing required fields
+export const migrateReminders = mutation({
+    args: {},
+    handler: async (ctx) => {
+        const reminders = await ctx.db.query("Reminder").collect();
+        const now = new Date().toISOString();
+        const today = now.split('T')[0]; // Get YYYY-MM-DD format
+        
+        let fixedCount = 0;
+        
+        for (const reminder of reminders) {
+            const updates: any = {};
+            let needsUpdate = false;
+            
+            // Add createdAt if missing
+            if (!reminder.createdAt) {
+                updates.createdAt = now;
+                needsUpdate = true;
+            }
+            
+            // Add triggerDate if missing
+            if (!reminder.triggerDate) {
+                updates.triggerDate = today;
+                needsUpdate = true;
+            }
+            
+            if (needsUpdate) {
+                await ctx.db.patch(reminder._id, updates);
+                fixedCount++;
+            }
+        }
+        
+        return { fixedCount, totalReminders: reminders.length };
+    }
+});
