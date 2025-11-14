@@ -2,7 +2,7 @@
  * Formats a date string (YYYY-MM-DD) to a readable format
  * Example: "2024-11-13" -> "Wednesday Nov 13th"
  */
-export const formatDate = (dateString: string): string => {
+const formatDate = (dateString: string): string => {
   const date = new Date(dateString + 'T00:00:00');
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -19,6 +19,8 @@ export const formatDate = (dateString: string): string => {
   
   return `${dayName} ${month} ${getOrdinal(day)}`;
 };
+
+export default formatDate;
 
 /**
  * Gets today's date as a string in YYYY-MM-DD format

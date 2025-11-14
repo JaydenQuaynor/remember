@@ -77,20 +77,20 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: '#C3333',
     justifyContent: 'center',
     alignItems: 'center',
   },
   dayCircleActive: {
-    backgroundColor: '#C33333',
+    backgroundColor: '#F0F0F0',
   },
   dayText: {
     fontSize: 10,
-    color: '#999',
+    color: 'rgba(255, 255, 255, 0.52), 255, 0)',
     fontWeight: '500',
   },
   dayTextActive: {
-    color: '#FFF',
+    color: '#C33333',
     fontWeight: '600',
   },
   dateContainer: {
