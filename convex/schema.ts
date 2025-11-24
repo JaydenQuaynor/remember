@@ -29,5 +29,13 @@ export default defineSchema({
         createdAt: v.string(),
         isDone: v.boolean(),   
       }
-    )
+    ),
+
+
+    Trigger : defineTable({
+      triggerName: v.string(),
+      triggerLocation: v.string(),
+      triggerRadius: v.number(),
+
+    })
 })

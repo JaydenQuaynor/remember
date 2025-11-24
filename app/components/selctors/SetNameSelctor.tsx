@@ -27,7 +27,7 @@ export default function SetNameSelctor() {
 
   return (
     <Pressable 
-    style={{ flex: 1 }} 
+    style={styles.container} 
     onPress={() => {
       if (isEditing) {
         Keyboard.dismiss();
@@ -64,7 +64,9 @@ export default function SetNameSelctor() {
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+      width: '100%',
+    },
     ScreenFill: {
       marginTop: "25%",
       borderTopRightRadius: 24,
