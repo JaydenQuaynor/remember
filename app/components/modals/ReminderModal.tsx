@@ -1,8 +1,8 @@
 import { BlurView } from 'expo-blur';
 import React from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
-import CreatableTagSelect from '../selctors/CreatableTagSelect';
-import SetNameSelctor from '../selctors/SetNameSelctor';
+import SetNameSelctor from './ReminderModalCompents/SetNameSelctor';
+import SetTrigger from './ReminderModalCompents/SetTrigger';
 
 
 
@@ -15,11 +15,10 @@ export default function ReminderModal() {
         <View style={styles.ScreenFill}>
           <View style={styles.contentContainer}>
             {/* set Reminder name */}
-            <SetNameSelctor />  
+            <SetNameSelctor />
+            <SetTrigger />
             
-            {/* Trigger Component */}
-            <CreatableTagSelect />
-            
+  
             {/* <SingleTagSelctor /> */}
           </View>
         </View>

@@ -1,12 +1,46 @@
 import { api } from '@/convex/_generated/api';
 import { useQuery } from "convex/react";
-import React, { useEffect } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
+// Trigger: defineTable({
+//   triggerLocation: v.string(),
+//   triggerName: v.string(),
+//   triggerRadius: v.float64(),
+// }),
+// {selectedTrigger == null ? (
+//   // Nothing selected yet → show tags to pick from
+//   <View style={styles.triggersContainer}>
+//     {triggers.map((trigger) => (
+//       <Pressable 
+//         key={trigger._id}
+//         onPress={() => setSelectedTrigger(trigger)}  // ← Add this!
+//         style={styles.triggerButton}
+//       >
+//         <Text style={styles.triggerText}>{trigger.triggerName}</Text>
+//       </Pressable>
+//     ))}
+//   </View>
+// ) : (
+//   // Something selected → show what was picked
+//   <Pressable onPress={() => setSelectedTrigger(null)}>  {/* Tap to change */}
+//     <Text style={styles.selectTriggerText}>@{selectedTrigger.triggerName}</Text>
+//   </Pressable>
+// )}
 
+interface TriggerId  {
+  _id : string,
+  triggerName : string
+  triggerLocation: string
+}
 
 
 export default function CreatableTagSelect() {
+ const [ selectorOpen , setSelctorOpen] = useState(false);
+ const [selectedTrigger , setSelectedTrigger ] = useState<TriggerId | null>(null);
+ const [ isEditing , setIsEditing ] = useState(false);
+
+
   //gets data from convex DB
   const triggers = useQuery(api.Triggers.getTriggers);
 //Live updating data, watching for changes
@@ -31,21 +65,28 @@ export default function CreatableTagSelect() {
     );
   }
   return (
+
+
     <View style={styles.container}>
-      {/* mapps convex db triggerTitle to a component */}
-      <View style={styles.triggersContainer}>
-        {triggers.map((trigger) => (
-          <Pressable 
-            key={trigger._id}
-            style={({ pressed }) => [
-              styles.triggerButton,
-              pressed && styles.triggerButtonPressed
-            ]}
-          >
-            <Text style={styles.triggerText}>{trigger.triggerName}</Text>
-          </Pressable>
-        ))}
-      </View>
+      <Pressable>
+         <TextInput 
+      //  ref={inputRef}
+      //  style={[
+      //    styles.taskNameText, tempInput && styles.taskNameActive
+      //  ]}
+      //  value={tempInput}
+      //  onChangeText={setTempInput}
+      //  onBlur={commitEdit}
+      //  onSubmitEditing={commitEdit}
+       placeholder='@Pick A Trigger'
+       placeholderTextColor="rgba(255, 255, 255, 0.4)"
+       selectionColor="#FFFFFF"
+       returnKeyType="done"              
+         />
+      </Pressable>
+
+
+
     </View>
   )
 }
@@ -62,6 +103,18 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.4)',
+  },
+  selectTriggerBtn: {
+    width: '100%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  selectTriggerText: {
+    fontSize: 48,
+    fontWeight: '600',
+    color: '#C33333',
   },
   triggersContainer: {
     flexDirection: 'row',
